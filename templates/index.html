@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Image Caption Generator</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Adding reliable Font Awesome CDN link -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body {
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .container {
+            background-color: rgba(255, 255, 255, 0.9);
+            border-radius: 20px;
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+            padding: 30px;
+            width: 90%;
+            max-width: 600px;
+            text-align: center;
+            margin: 20px;
+        }
+
+        .title {
+            color: #2c3e50;
+            margin-bottom: 10px;
+            font-size: 32px;
+            font-weight: bold;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
+        }
+
+        .subtitle {
+            color: #3498db;
+            font-size: 18px;
+            margin-bottom: 20px;
+        }
+
+        .description {
+            color: #7f8c8d;
+            margin-bottom: 25px;
+            line-height: 1.5;
+            font-size: 16px;
+        }
+
+        .highlight {
+            color: #3498db;
+            font-weight: bold;
+        }
+
+        .features {
+            display: flex;
+            justify-content: space-around;
+            margin: 25px 0;
+        }
+
+        .feature {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 30%;
+        }
+
+        .feature-icon {
+            background: linear-gradient(to right, #3498db, #2980b9);
+            color: white;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 10px;
+            box-shadow: 0 4px 10px rgba(52, 152, 219, 0.3);
+        }
+
+        .feature-text {
+            color: #34495e;
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .preview-container {
+            position: relative;
+            height: 250px;
+            width: 100%;
+            border: 2px dashed #3498db;
+            border-radius: 15px;
+            margin-bottom: 20px;
+            overflow: hidden;
+            cursor: pointer;
+            background-color: #f8f9fa;
+        }
+
+        #preview {
+            height: 100%;
+            width: 100%;
+            object-fit: contain;
+            display: none;
+        }
+
+        .preview-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.4);
+            display: none;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .preview-container:hover .preview-overlay {
+            display: flex;
+        }
+
+        .preview-icon {
+            color: white;
+            font-size: 30px;
+        }
+
+        .placeholder-text {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+            color: #7f8c8d;
+            width: 80%;
+        }
+
+        @keyframes pulse {
+            0% { opacity: 0.8; }
+            50% { opacity: 1; }
+            100% { opacity: 0.8; }
+        }
+
+        .animation-pulse {
+            animation: pulse 2s infinite;
+        }
+
+        #fileInput {
+            display: none;
+        }
+
+        .button-group {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 20px;
+        }
+
+        .button {
+            background: linear-gradient(to right, #3498db, #2980b9);
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            text-align: center;
+            font-size: 16px;
+            margin: 10px 5px;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: 0.3s ease;
+            font-weight: bold;
+            box-shadow: 0 4px 10px rgba(52, 152, 219, 0.3);
+            flex: 1;
+        }
+
+        .button:hover {
+            background: linear-gradient(to right, #2980b9, #3498db);
+            transform: translateY(-3px);
+            box-shadow: 0 6px 15px rgba(52, 152, 219, 0.4);
+        }
+
+        .generate {
+            background: linear-gradient(to right, #2ecc71, #27ae60);
+            box-shadow: 0 4px 10px rgba(46, 204, 113, 0.3);
+        }
+
+        .generate:hover {
+            background: linear-gradient(to right, #27ae60, #2ecc71);
+            box-shadow: 0 6px 15px rgba(46, 204, 113, 0.4);
+        }
+
+        .disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none !important;
+        }
+
+        .footer {
+            margin-top: 30px;
+            color: #7f8c8d;
+            font-size: 14px;
+            line-height: 1.6;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="title">AI Image Caption Generator</div>
+        <div class="subtitle">Turn Your Images Into Words</div>
+        <div class="description">
+            Upload any image and our <span class="highlight">advanced AI</span> will analyze it and generate a descriptive caption.
+        </div>
+        
+        <div class="features">
+            <div class="feature">
+                <div class="feature-icon">
+                    <i class="fas fa-bolt"></i>
+                </div>
+                <div class="feature-text">Fast Processing</div>
+            </div>
+            <div class="feature">
+                <div class="feature-icon">
+                    <i class="fas fa-brain"></i>
+                </div>
+                <div class="feature-text">Powered by AI</div>
+            </div>
+            <div class="feature">
+                <div class="feature-icon">
+                    <i class="fas fa-magic"></i>
+                </div>
+                <div class="feature-text">Accurate Results</div>
+            </div>
+        </div>
+        
+        <form action="{{url_for('after')}}" method="POST" enctype="multipart/form-data">
+            <div class="preview-container">
+                <img id="preview" src="#" alt="Preview">
+                <div id="placeholder-text" class="placeholder-text animation-pulse">
+                    <i class="fas fa-cloud-upload-alt" style="font-size: 40px; margin-bottom: 15px;"></i>
+                    <br>Drag an image here or click to browse
+                </div>
+                <div class="preview-overlay">
+                    <i class="fas fa-search-plus preview-icon"></i>
+                </div>
+            </div>
+
+            <input type="file" id="fileInput" name="file1" accept="image/*" onchange="previewImage(event)">
+            
+            <div class="button-group">
+                <button type="button" class="button" onclick="document.getElementById('fileInput').click()">
+                    <i class="fas fa-image"></i> SELECT IMAGE
+                    <!-- <i class="fas fa-file-image"></i> SELECT IMAGE -->
+                </button>
+                
+                <button type="submit" id="generateBtn" class="button generate disabled">
+                    <i class="fas fa-magic"></i> GENERATE CAPTION
+                    <!-- <i class="fas fa-wand-magic-sparkles"></i> GENERATE CAPTION -->
+                </button>
+            </div>
+        </form>
+
+        <div class="footer">
+            Our AI can recognize objects, scenes, activities, and more!<br>
+            Try it with landscapes, pets, people, food, or anything else.
+            <i class="fas fa-info-circle"></i> Our AI can recognize objects, scenes, activities, and more!<br>
+            <i class="fas fa-lightbulb"></i> Try it with landscapes, pets, people, food, or anything else.
+        </div>
+    </div>
+
+    <script>
+        function previewImage(event) {
+            const reader = new FileReader();
+            reader.onload = function () {
+                const output = document.getElementById('preview');
+                output.src = reader.result;
+                // Hide placeholder text when image is selected
+                document.getElementById('placeholder-text').style.display = 'none';
+                // Enable generate button
+                document.getElementById('generateBtn').classList.remove('disabled');
+            };
+            reader.readAsDataURL(event.target.files[0]);
+        }
+
+        // Set default image
+        document.addEventListener('DOMContentLoaded', function() {
+            const preview = document.getElementById('preview');
+            preview.src = "#";
+        });
+        /* ... rest of code here ... */
+    </script>
+    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+    <!-- Removed the problematic script tag and replaced with the CDN in the head -->
+</body>
+</html>

@@ -1,0 +1,134 @@
+
+<html>
+<head>
+    <title>Caption Results</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Adding reliable Font Awesome CDN link -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body {
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .container {
+            background-color: rgba(255, 255, 255, 0.9);
+            border-radius: 20px;
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+            padding: 30px;
+            width: 90%;
+            max-width: 600px;
+            text-align: center;
+            margin: 20px;
+        }
+
+        .title {
+            color: #2c3e50;
+            margin-bottom: 25px;
+            font-size: 32px;
+            font-weight: bold;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
+        }
+
+        img {
+            border: 3px solid #3498db;
+            border-radius: 15px;
+            height: 300px;
+            width: 100%;
+            max-width: 450px;
+            object-fit: contain;
+            background-color: #f8f9fa;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+            margin: 20px auto;
+            transition: transform 0.3s ease;
+        }
+
+        img:hover {
+            transform: scale(1.03);
+        }
+
+        .caption-container {
+            position: relative;
+            margin: 30px auto;
+            padding: 20px;
+            background: linear-gradient(to right, #e0eafc, #cfdef3);
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+            max-width: 80%;
+        }
+
+        .caption-text {
+            color: #34495e;
+            font-size: 20px;
+            font-weight: 500;
+            line-height: 1.4;
+            position: relative;
+        }
+
+        .caption-text:before, .caption-text:after {
+            content: '"';
+            font-size: 24px;
+            color: #3498db;
+            font-weight: bold;
+        }
+
+        .button {
+            background: linear-gradient(to right, #3498db, #2980b9);
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            text-align: center;
+            font-size: 16px;
+            margin: 20px auto 10px;
+            border-radius: 50px;
+            cursor: pointer;
+            display: inline-block;
+            transition: 0.3s ease;
+            font-weight: bold;
+            box-shadow: 0 4px 10px rgba(52, 152, 219, 0.3);
+            text-decoration: none;
+        }
+
+        .button:hover {
+            background: linear-gradient(to right, #2980b9, #3498db);
+            transform: translateY(-3px);
+            box-shadow: 0 6px 15px rgba(52, 152, 219, 0.4);
+        }
+
+        .footer {
+            margin-top: 30px;
+            color: #7f8c8d;
+            font-size: 14px;
+            line-height: 1.6;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="title">Your Caption Result</div>
+        
+        <img src="{{url_for('static', filename='file.jpg')}}" alt="Uploaded image">
+        
+        <div class="caption-container">
+            <div class="caption-text">
+                {{final}}
+            </div>
+        </div>
+        
+        <a href="/" class="button">
+            <i class="fas fa-arrow-left"></i> Generate Another Caption
+        </a>
+
+        <div class="footer">
+            <i class="fas fa-info-circle"></i> AI-powered image caption generation<br>
+            <i class="fas fa-lightbulb"></i> Try more images to see different captions
+        </div>
+    </div>
+</body>
+</html>
